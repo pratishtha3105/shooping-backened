@@ -44,7 +44,7 @@ This is the backend for a shopping app, built with Node.js, Express, PostgreSQL,
 
 2. Install dependencies:
     ```bash
-    npm start
+    npm install
 
 3. Run the app:
     ```bash
