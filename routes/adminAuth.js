@@ -4,6 +4,7 @@ const { prisma } = require("../db");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 
+// admin signup
 router.post(
   "/signup",
   [
@@ -23,7 +24,6 @@ router.post(
     }
 
     const { email, password } = req.body;
-    //console.log(req.body)
 
     const user = await prisma.admin.findUnique({
       where: {
@@ -49,9 +49,13 @@ router.post(
       },
     });
 
-    const token = await JWT.sign(newUser, process.env.JSON_WEB_TOKEN_SECRET_ADMIN, {
-      expiresIn: 3600000,
-    });
+    const token = await JWT.sign(
+      newUser,
+      process.env.JSON_WEB_TOKEN_SECRET_ADMIN,
+      {
+        expiresIn: 3600000,
+      }
+    );
     return res.json({
       user: newUser,
       token,
@@ -64,6 +68,7 @@ router.post(
 // Return Jwt
 //
 
+// ADMIN login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -92,20 +97,21 @@ router.post("/login", async (req, res) => {
     email: user.email,
   };
 
-  //console.log(user)
   const userPayload = {
     id: user.id,
     email: user.email,
   };
-  const token = await JWT.sign(userPayload, process.env.JSON_WEB_TOKEN_SECRET_ADMIN, {
-    expiresIn: 3600000,
-  });
+  const token = await JWT.sign(
+    userPayload,
+    process.env.JSON_WEB_TOKEN_SECRET_ADMIN,
+    {
+      expiresIn: 3600000,
+    }
+  );
   return res.json({
     user: sendingPayload,
     token,
   });
 });
-
-
 
 module.exports = router;

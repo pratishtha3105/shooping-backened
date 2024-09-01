@@ -4,6 +4,7 @@ const { prisma } = require("../db");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 
+// user signup
 router.post(
   "/signup",
   [
@@ -27,7 +28,6 @@ router.post(
     }
 
     const { email, password, name, address, phone } = req.body;
-    //console.log(req.body)
 
     const user = await prisma.user.findUnique({
       where: {
@@ -73,7 +73,7 @@ router.post(
 // Validate Password
 // Return Jwt
 //
-
+// user login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -105,7 +105,6 @@ router.post("/login", async (req, res) => {
     phoneNumber: user.phoneNumber,
   };
 
-  //console.log(user)
   const userPayload = {
     id: user.id,
     email: user.email,
@@ -120,6 +119,7 @@ router.post("/login", async (req, res) => {
   });
 });
 
+// revalidate token route
 router.get("/me", async (req, res) => {
   const bearerToken = req.headers.authorization;
   if (!bearerToken) return res.send(null);
